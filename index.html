@@ -3,674 +3,725 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estrategia Activa 2026 - Dashboard de Inversión</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Morning Market Brief | Earnings & Options Optimizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        :root {
-            --bg-deep: #0a0f18;
-            --bg-card: #161e2d;
-            --bg-card-hover: #1e293b;
-            --accent-primary: #3b82f6;
-            --accent-secondary: #10b981;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --gold: #fbbf24;
-            --energy: #10b981;
-            --tech: #8b5cf6;
-            --biotech: #f43f5e;
-            --infra: #06b6d4;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: var(--bg-deep);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            padding-bottom: 50px;
-        }
-
-        header {
-            padding: 40px 20px;
-            text-align: center;
-            background: linear-gradient(to bottom, #111827, var(--bg-deep));
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 40px;
-        }
-
-        h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #3b82f6, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .filters-summary {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
-        .token {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            color: var(--accent-primary);
-            font-weight: 600;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 24px;
-        }
-
-        .card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 24px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            background-color: var(--bg-card-hover);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 16px;
-        }
-
-        .ticker-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .ticker {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .price {
-            font-size: 0.9rem;
-            color: var(--accent-secondary);
-            font-weight: 600;
-        }
-
-        .sector-tag {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        /* Sector Colors */
-        .sector-ia { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
-        .sector-energy { background: rgba(16, 185, 129, 0.15); color: #34d399; }
-        .sector-mining { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
-        .sector-biotech { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
-        .sector-infra { background: rgba(6, 182, 212, 0.15); color: #22d3ee; }
-        .sector-other { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; }
-
-        .thesis {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            margin-bottom: 24px;
-            flex-grow: 1;
-            display: -webkit-box;
-            -webkit-line-clamp: 4;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .card-footer {
-            margin-top: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .volatility-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .vol-indicator {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        .vol-extreme { background-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
-        .vol-high { background-color: #f97316; }
-        .vol-medium { background-color: #eab308; }
-
-        .btn-chart {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--accent-primary);
-            color: white;
-            padding: 12px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: background 0.2s;
-            gap: 8px;
-        }
-
-        .btn-chart:hover {
-            background: #2563eb;
-        }
-
-        /* Layout cleanup for review */
-        @media (max-width: 640px) {
-            h1 { font-size: 1.8rem; }
-            .grid { grid-template-columns: 1fr; }
-        }
-
-        /* Animation for cards */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .card {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
+        body { font-family: 'Inter', sans-serif; background: #0a0e1a; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .gradient-text { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .bullish { color: #10b981; }
+        .bearish { color: #ef4444; }
+        .tab-active { background: rgba(99, 102, 241, 0.2); border-bottom: 2px solid #6366f1; color: #818cf8; }
+        .strike-optimal { background: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981; }
+        .strike-high { background: rgba(239, 68, 68, 0.1); border-left: 3px solid rgba(239, 68, 68, 0.5); }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .ticker { animation: ticker 40s linear infinite; }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     </style>
 </head>
-<body>
+<body class="text-gray-100 min-h-screen">
 
-    <header>
-        <div class="container">
-            <h1>Estrategia Activa 2026</h1>
-            <p class="subtitle">Análisis de Convergencia: 20 Microcaps de Alto Impacto filtradas por Tesis de Supervivencia y Momentum Sectorial.</p>
+    <!-- Header -->
+    <header class="border-b border-gray-800 bg-gray-900/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex justify-between items-center mb-3">
+                <div class="flex items-center gap-3">
+                    <i data-lucide="trending-up" class="w-7 h-7 text-indigo-400"></i>
+                    <div>
+                        <h1 class="text-lg font-bold tracking-tight">Morning Market Brief</h1>
+                        <p class="text-[10px] text-gray-400 mono">MAG 7 + COMPETITORS | EARNINGS + OPTIONS</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 text-xs bg-gray-800 px-2 py-1 rounded-full">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <span class="text-green-400">Sistema Activo</span>
+                    </div>
+                    <div class="text-right">
+                        <div id="clock" class="text-xl font-bold mono text-indigo-400">--:--:--</div>
+                        <div class="text-[10px] text-gray-500" id="market-status">Cargando...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="flex gap-1 border-b border-gray-800 overflow-x-auto">
+                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-active px-4 py-2 text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-2">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+                </button>
+                <button onclick="switchTab('options')" id="tab-options" class="px-4 py-2 text-sm font-medium text-gray-400 transition-colors hover:text-white whitespace-nowrap flex items-center gap-2">
+                    <i data-lucide="target" class="w-4 h-4"></i> Options Optimizer
+                    <span class="ml-1 px-1.5 py-0.5 bg-green-500/20 text-green-400 text-[10px] rounded">NUEVO</span>
+                </button>
+                <button onclick="switchTab('earnings')" id="tab-earnings" class="px-4 py-2 text-sm font-medium text-gray-400 transition-colors hover:text-white whitespace-nowrap flex items-center gap-2">
+                    <i data-lucide="presentation" class="w-4 h-4"></i> Earnings
+                </button>
+                <button onclick="switchTab('scanner')" id="tab-scanner" class="px-4 py-2 text-sm font-medium text-gray-400 transition-colors hover:text-white whitespace-nowrap flex items-center gap-2">
+                    <i data-lucide="scan" class="w-4 h-4"></i> Scanner
+                </button>
+            </nav>
         </div>
     </header>
 
-    <div class="container">
-        <div class="filters-summary">
-            <span class="token">Filtro: No Muerte ✅</span>
-            <span class="token">Impulso Sectorial: IA/Energía/Biotech 🔥</span>
-            <span class="token">Volatilidad Activa: Swing-Ready 📈</span>
-        </div>
-
-        <div class="grid" id="asset-grid">
-            <!-- LUMN -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">LUMN</span>
-                        <span class="price">$7.83</span>
-                    </div>
-                    <span class="sector-tag sector-ia">Infra. IA</span>
-                </div>
-                <p class="thesis">Reducción drástica de apalancamiento mediante acuerdos estratégicos y contratos de fibra óptica para IA con hiperescaladores.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-extreme"></span>
-                        <span>Volatilidad: Muy Alta (Turnaround)</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/LUMN/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- CRSR -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">CRSR</span>
-                        <span class="price">$5.62</span>
-                    </div>
-                    <span class="sector-tag sector-other">Hardware / IA</span>
-                </div>
-                <p class="thesis">Flujo de caja robusto y márgenes récord. Recompra de acciones de $50M activa, señal sólida de salud financiera.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-high"></span>
-                        <span>Volatilidad: Alta (Beta > 1)</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/CRSR/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- DFLI -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">DFLI</span>
-                        <span class="price">$1.05</span>
-                    </div>
-                    <span class="sector-tag sector-energy">Alm. Energía</span>
-                </div>
-                <p class="thesis">Reestructuración de deuda de $75M completada. Patentes clave en baterías de litio y cumplimiento Nasdaq recuperado.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-extreme"></span>
-                        <span>Volatilidad: Extrema (ATR Elevado)</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/DFLI/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- RUM -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">RUM</span>
-                        <span class="price">$6.36</span>
-                    </div>
-                    <span class="sector-tag sector-other">Medios / Tech</span>
-                </div>
-                <p class="thesis">Crecimiento de ingresos del 85% y proyecciones explosivas (+202%). Demanda acelerada por plataformas alternativas.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-high"></span>
-                        <span>Volatilidad: Alta (Crecimiento)</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/RUM/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- IRWD -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">IRWD</span>
-                        <span class="price">$3.96</span>
-                    </div>
-                    <span class="sector-tag sector-biotech">Biotecnología</span>
-                </div>
-                <p class="thesis">Flujos de caja duraderos (franquicia LINZESS) y EBITDA al alza para 2026 tras nuevas aprobaciones pediátricas.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-high"></span>
-                        <span>Volatilidad: Alta (Biotech)</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/IRWD/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- AGRO -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">AGRO</span>
-                        <span class="price">$9.20</span>
-                    </div>
-                    <span class="sector-tag sector-energy">Energía / Agro</span>
-                </div>
-                <p class="thesis">Integración con Profertil y diversificación en energía renovable para estabilizar ingresos recurrentes.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-medium"></span>
-                        <span>Volatilidad: Media-Alta</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/AGRO/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- FIP -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">FIP</span>
-                        <span class="price">$6.26</span>
-                    </div>
-                    <span class="sector-tag sector-infra">Infraestructura</span>
-                </div>
-                <p class="thesis">Aceleración de ingresos proyectada al 73.5% por demanda masiva de activos energéticos críticos.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-high"></span>
-                        <span>Volatilidad: Alta</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/FIP/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- GROY -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">GROY</span>
-                        <span class="price">$3.71</span>
-                    </div>
-                    <span class="sector-tag sector-mining">Minería (Oro)</span>
-                </div>
-                <p class="thesis">Modelo de regalías de bajo riesgo. Ingresos proyectados +133% en 2026 apalancados al mercado alcista del oro.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-high"></span>
-                        <span>Volatilidad: Alta</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/GROY/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- NOK -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">NOK</span>
-                        <span class="price">$7.77</span>
-                    </div>
-                    <span class="sector-tag sector-ia">Redes / IA</span>
-                </div>
-                <p class="thesis">Pieza central infra digital 2026. Acuerdos con Microsoft para gestión 5G y redes industriales avanzadas.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-medium"></span>
-                        <span>Volatilidad: Media</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/NOK/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- III -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">III</span>
-                        <span class="price">$3.11</span>
-                    </div>
-                    <span class="sector-tag sector-ia">Servicios / IA</span>
-                </div>
-                <p class="thesis">Soluciones de infraestructura listas para IA. Identificado por fuerte momentum de insiders recientemente.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-high"></span>
-                        <span>Volatilidad: Alta (Penny Stock)</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/III/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- TALK -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">TALK</span>
-                        <span class="price">$4.99</span>
-                    </div>
-                    <span class="sector-tag sector-other">Salud / IA</span>
-                </div>
-                <p class="thesis">Líder en rendimiento sub-$10. Cambio del 94% en 6 meses impulsado por la adopción masiva de telesalud.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-high"></span>
-                        <span>Volatilidad: Alta</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/TALK/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- BTG -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">BTG</span>
-                        <span class="price">$5.39</span>
-                    </div>
-                    <span class="sector-tag sector-mining">Minería (Oro)</span>
-                </div>
-                <p class="thesis">Productor con resultados históricos impulsados por la demanda récord de bancos centrales proyectada a 2026.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-high"></span>
-                        <span>Volatilidad: Alta</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/BTG/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- BCBP -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">BCBP</span>
-                        <span class="price">$8.53</span>
-                    </div>
-                    <span class="sector-tag sector-other">Financiero</span>
-                </div>
-                <p class="thesis">Saneamiento de activos problemáticos (REO) completado y capital reforzado para normalizar ganancias.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-medium"></span>
-                        <span>Volatilidad: Media</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/BCBP/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- ITRG -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">ITRG</span>
-                        <span class="price">$3.90</span>
-                    </div>
-                    <span class="sector-tag sector-other">Materiales</span>
-                </div>
-                <p class="thesis">Expansión mediante adquisiciones de tierras estratégicas. Apreciación anual del 222% con señal alcista fuerte.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-extreme"></span>
-                        <span>Volatilidad: Muy Alta</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/ITRG/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- TRX -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">TRX</span>
-                        <span class="price">$1.79</span>
-                    </div>
-                    <span class="sector-tag sector-mining">Minería (Oro)</span>
-                </div>
-                <p class="thesis">Microcap altamente líquida ganando un 447% en 52 semanas. Aprovechando el superciclo de metales preciosos.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-extreme"></span>
-                        <span>Volatilidad: Extrema</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/TRX/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- ATOM -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">ATOM</span>
-                        <span class="price">$7.00</span>
-                    </div>
-                    <span class="sector-tag sector-ia">Semicond.</span>
-                </div>
-                <p class="thesis">Innovación en eficiencia de transistores crítica para los procesos de 2nm que dominarán en 2026.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-high"></span>
-                        <span>Volatilidad: Alta</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/ATOM/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- EGY -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">EGY</span>
-                        <span class="price">$5.15</span>
-                    </div>
-                    <span class="sector-tag sector-energy">Energy (O/G)</span>
-                </div>
-                <p class="thesis">Márgenes favorables impulsados por demanda internacional sostenida de hidrocarburos competitivos en costo.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-high"></span>
-                        <span>Volatilidad: Alta</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/EGY/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- FIEE -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">FIEE</span>
-                        <span class="price">$7.24</span>
-                    </div>
-                    <span class="sector-tag sector-ia">Tecnología</span>
-                </div>
-                <p class="thesis">"Titán Técnico" con retorno del 322% en 3 meses. Señal alcista fuerte y volumen inusual detectado.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-extreme"></span>
-                        <span>Volatilidad: Muy Alta</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/FIEE/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- CNVS -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">CNVS</span>
-                        <span class="price">$3.07</span>
-                    </div>
-                    <span class="sector-tag sector-ia">Medios / IA</span>
-                </div>
-                <p class="thesis">Convergencia de medios digitales y monetización por IA. Potencial de apreciación del 258% según analistas.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-high"></span>
-                        <span>Volatilidad: Alta</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/CNVS/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
-            <!-- ORA -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="ticker-group">
-                        <span class="ticker">ORA</span>
-                        <span class="price"><$10</span>
-                    </div>
-                    <span class="sector-tag sector-energy">Energía Limpia</span>
-                </div>
-                <p class="thesis">Suministro de 150 MW geotérmicos para Google. Ingresos recurrentes asegurados por centros de datos IA.</p>
-                <div class="card-footer">
-                    <div class="volatility-info">
-                        <span class="vol-indicator vol-medium"></span>
-                        <span>Volatilidad: Media</span>
-                    </div>
-                    <a href="https://finance.yahoo.com/quote/ORA/chart" target="_blank" class="btn-chart">
-                        Ver Gráfico Yahoo Finance
-                    </a>
-                </div>
-            </div>
-
+    <!-- Ticker -->
+    <div class="bg-gray-900 border-b border-gray-800 py-2 overflow-hidden">
+        <div class="flex whitespace-nowrap ticker mono text-sm" id="ticker-content">
+            <span class="mx-4 text-gray-500">Cargando mercado...</span>
         </div>
     </div>
 
+    <main class="max-w-7xl mx-auto px-4 py-6">
+
+        <!-- DASHBOARD -->
+        <section id="section-dashboard" class="fade-in space-y-6">
+            
+            <!-- Market Sentiment -->
+            <div class="glass rounded-2xl p-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Sentimiento del Mercado</h2>
+                        <div class="flex items-center gap-3">
+                            <div id="sentiment-badge" class="px-4 py-2 rounded-full bg-yellow-500/20 border border-yellow-500/50 text-yellow-400 font-bold text-lg">
+                                CAUTELOSO
+                            </div>
+                            <p class="text-gray-300 text-sm">Mercado mixto. Revisar earnings próximos.</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-3xl font-bold mono gradient-text" id="market-score">6/10</div>
+                        <div class="text-xs text-gray-500">Market Health Score</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <button onclick="switchTab('options')" class="glass rounded-xl p-4 hover:bg-green-500/10 transition-all border border-green-500/30 text-left group">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="p-2 bg-green-500/20 rounded-lg">
+                            <i data-lucide="target" class="w-5 h-5 text-green-400"></i>
+                        </div>
+                        <span class="font-semibold text-green-400">Options Optimizer</span>
+                    </div>
+                    <p class="text-xs text-gray-400">Calcular rango óptimo de strikes</p>
+                </button>
+                
+                <button onclick="switchTab('earnings')" class="glass rounded-xl p-4 hover:bg-indigo-500/10 transition-all border border-indigo-500/30 text-left">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="p-2 bg-indigo-500/20 rounded-lg">
+                            <i data-lucide="presentation" class="w-5 h-5 text-indigo-400"></i>
+                        </div>
+                        <span class="font-semibold text-indigo-400">Calendario Earnings</span>
+                    </div>
+                    <p class="text-xs text-gray-400">Próximos reportes trimestrales</p>
+                </button>
+                
+                <button onclick="switchTab('scanner')" class="glass rounded-xl p-4 hover:bg-yellow-500/10 transition-all border border-yellow-500/30 text-left">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="p-2 bg-yellow-500/20 rounded-lg">
+                            <i data-lucide="scan" class="w-5 h-5 text-yellow-400"></i>
+                        </div>
+                        <span class="font-semibold text-yellow-400">Scanner Técnico</span>
+                    </div>
+                    <p class="text-xs text-gray-400">Soportes en medias móviles</p>
+                </button>
+            </div>
+
+            <!-- Stocks -->
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold flex items-center gap-2">
+                        <i data-lucide="crown" class="w-5 h-5 text-yellow-500"></i>
+                        MAG 7 + Competidores
+                    </h2>
+                    <span class="text-xs text-gray-500 mono" id="last-update">Actualizado: --:--:--</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="stocks-grid">
+                    <!-- Se llena con JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- OPTIONS OPTIMIZER -->
+        <section id="section-options" class="hidden fade-in space-y-6">
+            <div class="glass rounded-2xl p-6 border-2 border-green-500/30">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2 bg-green-500/20 rounded-lg">
+                        <i data-lucide="target" class="w-6 h-6 text-green-400"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold">Options Optimizer</h2>
+                        <p class="text-xs text-gray-400">Rango óptimo basado en rentabilidad uniforme</p>
+                    </div>
+                </div>
+
+                <!-- Inputs -->
+                <div class="bg-gray-800/50 rounded-xl p-4 mb-6 border border-gray-700">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-2">Ticker</label>
+                            <select id="opt-ticker" class="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 py-2 text-sm focus:border-green-500 focus:outline-none">
+                                <option value="">Seleccionar...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-2">Tipo</label>
+                            <div id="opt-type-display" class="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 py-2 text-sm text-gray-500">
+                                Auto-detect
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-2">Expiración</label>
+                            <select id="opt-expiry" class="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 py-2 text-sm focus:border-green-500 focus:outline-none">
+                                <option value="7">7 días</option>
+                                <option value="14" selected>14 días</option>
+                                <option value="30">30 días</option>
+                            </select>
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="calculateOptions()" class="w-full px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
+                                <i data-lucide="calculator" class="w-4 h-4"></i>
+                                Calcular
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div id="opt-results" class="hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Summary -->
+                        <div class="space-y-4">
+                            <div class="bg-green-500/10 rounded-xl p-4 border border-green-500/30">
+                                <h3 class="text-sm font-semibold text-green-400 mb-3 flex items-center gap-2">
+                                    <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                    Rango Óptimo
+                                </h3>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Strikes:</span>
+                                        <span id="result-strikes" class="font-bold mono text-white">--</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Costo:</span>
+                                        <span id="result-cost" class="font-bold mono text-green-400">$--</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Rentabilidad:</span>
+                                        <span id="result-rent" class="font-bold mono text-yellow-400">--%</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-400">Delta:</span>
+                                        <span id="result-delta" class="font-bold mono text-blue-400">--</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-gray-800/50 rounded-xl p-4 border border-gray-700">
+                                <h3 class="text-sm font-semibold text-gray-400 mb-3">Validación</h3>
+                                <div id="result-checks" class="space-y-2 text-xs"></div>
+                            </div>
+                        </div>
+
+                        <!-- Table -->
+                        <div class="lg:col-span-2">
+                            <h3 class="text-sm font-semibold text-gray-400 mb-3">Análisis de Strikes</h3>
+                            <div class="overflow-x-auto rounded-lg border border-gray-700">
+                                <table class="w-full text-xs">
+                                    <thead class="bg-gray-800">
+                                        <tr class="text-gray-400">
+                                            <th class="py-2 px-3 text-left">Strike</th>
+                                            <th class="py-2 px-3 text-right">Costo</th>
+                                            <th class="py-2 px-3 text-right">Min</th>
+                                            <th class="py-2 px-3 text-right">Max</th>
+                                            <th class="py-2 px-3 text-right">Rent%</th>
+                                            <th class="py-2 px-3 text-right">Delta</th>
+                                            <th class="py-2 px-3 text-center">Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="result-table" class="mono divide-y divide-gray-800"></tbody>
+                                </table>
+                            </div>
+                            <p class="mt-3 text-xs text-gray-500">
+                                <span class="text-green-400 font-semibold">ÓPTIMO:</span> Máxima rentabilidad uniforme, evitando strikes disruptivos
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Initial -->
+                <div id="opt-initial" class="text-center py-12 text-gray-500">
+                    <i data-lucide="calculator" class="w-12 h-12 mx-auto mb-3 opacity-30"></i>
+                    <p>Selecciona un ticker para calcular el rango óptimo</p>
+                </div>
+
+                <!-- Loading -->
+                <div id="opt-loading" class="hidden text-center py-12">
+                    <div class="w-12 h-12 border-3 border-green-500/30 border-t-green-500 rounded-full animate-spin mx-auto mb-3"></div>
+                    <p class="text-sm text-gray-400">Calculando...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EARNINGS -->
+        <section id="section-earnings" class="hidden fade-in">
+            <div class="glass rounded-2xl p-6 border border-indigo-500/30">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-indigo-500/20 rounded-lg">
+                            <i data-lucide="presentation" class="w-6 h-6 text-indigo-400"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold">Calendario de Earnings</h2>
+                            <p class="text-xs text-gray-400">Próximos reportes trimestrales</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="filterEarnings('all')" class="px-3 py-1 text-xs bg-indigo-600 rounded-full hover:bg-indigo-700">Todos</button>
+                        <button onclick="filterEarnings('today')" class="px-3 py-1 text-xs bg-red-600/50 rounded-full hover:bg-red-600">Hoy</button>
+                        <button onclick="filterEarnings('upcoming')" class="px-3 py-1 text-xs bg-yellow-600/50 rounded-full hover:bg-yellow-600">Próximos</button>
+                    </div>
+                </div>
+                <div id="earnings-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- SCANNER -->
+        <section id="section-scanner" class="hidden fade-in">
+            <div class="glass rounded-2xl p-6 border border-yellow-500/30">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold flex items-center gap-2">
+                            <i data-lucide="scan" class="w-6 h-6 text-yellow-400"></i>
+                            Scanner Técnico
+                        </h2>
+                        <p class="text-xs text-gray-400">Empresas cerca de soporte 200/100 MA</p>
+                    </div>
+                    <button onclick="runScanner()" class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 rounded-lg text-sm font-medium flex items-center gap-2">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                        Escanear
+                    </button>
+                </div>
+                <div id="scanner-results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="col-span-full text-center py-8 text-gray-500">
+                        Haz clic en "Escanear" para buscar oportunidades
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
     <script>
-        // Animación suave de entrada para las tarjetas
-        document.querySelectorAll('.card').forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.05}s`;
+        // ========== CONFIGURACIÓN ==========
+        const MAG7 = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA'];
+        const COMPETITORS = ['AMD', 'AVGO', 'PLTR', 'CRM', 'NFLX', 'INTC', 'SNOW', 'CRWD', 'UBER'];
+        const ALL_TICKERS = [...MAG7, ...COMPETITORS];
+        
+        const BASE_PRICES = {
+            'AAPL': 185, 'MSFT': 380, 'GOOGL': 142, 'AMZN': 178, 'NVDA': 875, 'META': 505, 'TSLA': 175,
+            'AMD': 178, 'AVGO': 1290, 'PLTR': 80, 'CRM': 310, 'NFLX': 875, 'INTC': 20, 'SNOW': 190, 'CRWD': 380, 'UBER': 72
+        };
+
+        const EARNINGS_DATA = [
+            { ticker: 'NVDA', date: '2025-03-06', time: 'after', epsEst: 0.84, revEst: 24.5 },
+            { ticker: 'CRM', date: '2025-02-26', time: 'after', epsEst: 2.57, revEst: 9.9 },
+            { ticker: 'AVGO', date: '2025-03-06', time: 'after', epsEst: 1.50, revEst: 14.6 },
+            { ticker: 'AAPL', date: '2025-01-30', time: 'after', epsEst: 2.35, revEst: 124.0 },
+            { ticker: 'MSFT', date: '2025-01-29', time: 'after', epsEst: 3.11, revEst: 68.9 },
+            { ticker: 'TSLA', date: '2025-01-29', time: 'after', epsEst: 0.76, revEst: 25.9 },
+            { ticker: 'AMD', date: '2025-02-04', time: 'after', epsEst: 0.77, revEst: 7.5 },
+            { ticker: 'META', date: '2025-01-29', time: 'after', epsEst: 6.77, revEst: 47.0 },
+            { ticker: 'NFLX', date: '2025-01-21', time: 'after', epsEst: 4.20, revEst: 10.1 },
+            { ticker: 'AMZN', date: '2025-02-06', time: 'after', epsEst: 1.00, revEst: 166.0 },
+            { ticker: 'GOOGL', date: '2025-02-04', time: 'after', epsEst: 2.12, revEst: 89.1 },
+            { ticker: 'CRWD', date: '2025-03-05', time: 'after', epsEst: 0.90, revEst: 0.94 }
+        ];
+
+        let marketData = {};
+        let currentTab = 'dashboard';
+
+        // ========== INICIALIZACIÓN ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initApp();
+            setInterval(updateClock, 1000);
+            setInterval(updateMarketStatus, 60000);
         });
+
+        function initApp() {
+            generateSimulatedData();
+            populateSelects();
+            renderStocks();
+            renderTicker();
+            renderEarnings('all');
+            updateClock();
+            updateMarketStatus();
+            lucide.createIcons();
+        }
+
+        // ========== NAVEGACIÓN ==========
+        function switchTab(tab) {
+            document.querySelectorAll('section[id^="section-"]').forEach(s => s.classList.add('hidden'));
+            document.querySelectorAll('nav button').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('text-gray-400');
+            });
+            
+            document.getElementById(`section-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).classList.add('tab-active');
+            document.getElementById(`tab-${tab}`).classList.remove('text-gray-400');
+            
+            currentTab = tab;
+            lucide.createIcons();
+        }
+
+        // ========== DATOS ==========
+        function generateSimulatedData() {
+            ALL_TICKERS.forEach(ticker => {
+                const base = BASE_PRICES[ticker] || 100;
+                const change = (Math.random() - 0.5) * 6; // -3% a +3%
+                marketData[ticker] = {
+                    ticker,
+                    price: base * (1 + change/100),
+                    change: change,
+                    volume: Math.floor(10 + Math.random() * 90) // 10M-100M
+                };
+            });
+        }
+
+        function populateSelects() {
+            const select = document.getElementById('opt-ticker');
+            ALL_TICKERS.sort().forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t;
+                opt.textContent = t;
+                select.appendChild(opt);
+            });
+
+            // Auto-detect tipo
+            select.addEventListener('change', (e) => {
+                const t = e.target.value;
+                if (t && marketData[t]) {
+                    const isBull = marketData[t].change >= 0;
+                    const display = document.getElementById('opt-type-display');
+                    display.textContent = isBull ? 'CALLS 📈' : 'PUTS 📉';
+                    display.className = `w-full bg-gray-900 border border-gray-600 rounded-lg px-3 py-2 text-sm font-bold ${isBull ? 'text-green-400' : 'text-red-400'}`;
+                }
+            });
+        }
+
+        // ========== OPTIONS OPTIMIZER ==========
+        function calculateOptions() {
+            const ticker = document.getElementById('opt-ticker').value;
+            if (!ticker) return alert('Selecciona un ticker');
+
+            document.getElementById('opt-initial').classList.add('hidden');
+            document.getElementById('opt-results').classList.add('hidden');
+            document.getElementById('opt-loading').classList.remove('hidden');
+
+            setTimeout(() => {
+                const data = marketData[ticker];
+                const isBull = data.change >= 0;
+                const price = data.price;
+                
+                // Generar strikes
+                const strikes = [];
+                const start = price * (isBull ? 0.90 : 0.85);
+                const end = price * (isBull ? 1.15 : 1.10);
+                const step = (end - start) / 12;
+                
+                for (let i = 0; i < 13; i++) {
+                    const strike = start + (step * i);
+                    const dist = Math.abs(strike - price) / price;
+                    
+                    // Costo base
+                    let cost = price * 0.035;
+                    if (dist < 0.02) cost = price * 0.065;
+                    else if (dist < 0.05) cost = price * 0.045;
+                    else if (dist > 0.08) cost = price * 0.018;
+                    
+                    // Delta
+                    let delta = 0.5 - (dist * 3);
+                    if (delta < 0.05) delta = 0.05;
+                    if (delta > 0.95) delta = 0.95;
+                    
+                    // Rentabilidad simulada
+                    const vol = 0.3 + Math.random() * 0.4;
+                    const min = cost * (1 - vol/2);
+                    const max = cost * (1 + vol);
+                    const rent = ((max - min) / min) * 100;
+                    
+                    strikes.push({
+                        strike: strike,
+                        cost: cost,
+                        min: min,
+                        max: max,
+                        rent: rent,
+                        delta: delta
+                    });
+                }
+
+                // Encontrar óptimo (método del mentor)
+                const sorted = [...strikes].sort((a, b) => b.rent - a.rent);
+                const filtered = sorted.slice(1, sorted.length - 2); // Quitar extremos
+                
+                let bestCluster = null;
+                let bestScore = 0;
+                
+                for (let i = 0; i <= filtered.length - 3; i++) {
+                    const cluster = filtered.slice(i, i + 3);
+                    const avgRent = cluster.reduce((s, x) => s + x.rent, 0) / 3;
+                    const stdDev = Math.sqrt(cluster.reduce((s, x) => s + Math.pow(x.rent - avgRent, 2), 0) / 3);
+                    const avgDelta = cluster.reduce((s, x) => s + x.delta, 0) / 3;
+                    
+                    const score = (avgRent / (stdDev + 5)) * (avgDelta >= 0.20 && avgDelta <= 0.40 ? 1.5 : 0.8);
+                    
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestCluster = cluster;
+                    }
+                }
+
+                // Marcar strikes
+                const optimalStrikes = bestCluster ? bestCluster.map(s => s.strike.toFixed(1)) : [];
+                strikes.forEach(s => {
+                    s.status = optimalStrikes.includes(s.strike.toFixed(1)) ? 'optimal' : 
+                               s.rent > 150 ? 'high' : 'normal';
+                });
+
+                // Renderizar resultados
+                if (bestCluster) {
+                    document.getElementById('result-strikes').textContent = optimalStrikes.join(', ');
+                    document.getElementById('result-cost').textContent = '$' + (bestCluster.reduce((s, x) => s + x.cost, 0) / 3).toFixed(2);
+                    document.getElementById('result-rent').textContent = (bestCluster.reduce((s, x) => s + x.rent, 0) / 3).toFixed(1) + '%';
+                    document.getElementById('result-delta').textContent = (bestCluster.reduce((s, x) => s + x.delta, 0) / 3).toFixed(2);
+                }
+
+                // Checks
+                const avgDelta = bestCluster ? bestCluster.reduce((s, x) => s + x.delta, 0) / 3 : 0;
+                const checks = [
+                    { name: 'Delta 0.20-0.40', pass: avgDelta >= 0.20 && avgDelta <= 0.40 },
+                    { name: 'Distancia < 15%', pass: bestCluster && Math.abs(bestCluster[1].strike - price) / price < 0.15 },
+                    { name: 'Rentabilidad > 50%', pass: bestCluster && (bestCluster.reduce((s, x) => s + x.rent, 0) / 3) > 50 }
+                ];
+                
+                document.getElementById('result-checks').innerHTML = checks.map(c => `
+                    <div class="flex justify-between items-center p-2 rounded ${c.pass ? 'bg-green-500/10' : 'bg-red-500/10'}">
+                        <span class="${c.pass ? 'text-green-400' : 'text-red-400'}">${c.name}</span>
+                        <i data-lucide="${c.pass ? 'check' : 'x'}" class="w-3 h-3 ${c.pass ? 'text-green-400' : 'text-red-400'}"></i>
+                    </div>
+                `).join('');
+
+                // Tabla
+                document.getElementById('result-table').innerHTML = strikes.map(s => {
+                    const rowClass = s.status === 'optimal' ? 'strike-optimal' : s.status === 'high' ? 'strike-high' : '';
+                    const badge = s.status === 'optimal' ? '<span class="px-2 py-0.5 bg-green-500 text-white text-[10px] rounded font-bold">ÓPTIMO</span>' :
+                                  s.status === 'high' ? '<span class="px-2 py-0.5 bg-red-500/50 text-red-300 text-[10px] rounded">ALTO</span>' : '-';
+                    
+                    return `
+                        <tr class="${rowClass}">
+                            <td class="py-2 px-3 font-bold">$${s.strike.toFixed(1)}</td>
+                            <td class="py-2 px-3 text-right">$${s.cost.toFixed(2)}</td>
+                            <td class="py-2 px-3 text-right text-red-400">$${s.min.toFixed(2)}</td>
+                            <td class="py-2 px-3 text-right text-green-400">$${s.max.toFixed(2)}</td>
+                            <td class="py-2 px-3 text-right ${s.rent > 100 ? 'text-yellow-400 font-bold' : ''}">${s.rent.toFixed(1)}%</td>
+                            <td class="py-2 px-3 text-right">${s.delta.toFixed(2)}</td>
+                            <td class="py-2 px-3 text-center">${badge}</td>
+                        </tr>
+                    `;
+                }).join('');
+
+                document.getElementById('opt-loading').classList.add('hidden');
+                document.getElementById('opt-results').classList.remove('hidden');
+                lucide.createIcons();
+                
+            }, 800);
+        }
+
+        // ========== RENDERIZADO ==========
+        function renderStocks() {
+            const grid = document.getElementById('stocks-grid');
+            const mag7Data = MAG7.map(t => marketData[t]);
+            const compData = COMPETITORS.map(t => marketData[t]);
+            
+            const renderCard = (d, isMag7) => {
+                const changeColor = d.change >= 0 ? 'text-green-400' : 'text-red-400';
+                const badge = isMag7 ? 'bg-yellow-500/20 text-yellow-400' : 'bg-indigo-500/20 text-indigo-400';
+                const badgeText = isMag7 ? 'MAG7' : 'COMP';
+                
+                return `
+                    <div class="glass rounded-xl p-4 border ${isMag7 ? 'border-yellow-500/20' : 'border-indigo-500/20'} hover:bg-gray-800/50 transition-all">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="font-bold text-lg mono">${d.ticker}</span>
+                                    <span class="text-[10px] px-1.5 py-0.5 rounded ${badge}">${badgeText}</span>
+                                </div>
+                                <div class="text-xs text-gray-500">${getCompanyName(d.ticker)}</div>
+                            </div>
+                            <i data-lucide="${d.change >= 0 ? 'trending-up' : 'trending-down'}" class="w-5 h-5 ${changeColor}"></i>
+                        </div>
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <div class="text-2xl font-bold mono">$${d.price.toFixed(2)}</div>
+                                <div class="text-sm ${changeColor}">${d.change >= 0 ? '+' : ''}${d.change.toFixed(2)}%</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-xs text-gray-500">Vol: ${d.volume}M</div>
+                                <button onclick="quickOptions('${d.ticker}')" class="mt-2 px-2 py-1 bg-green-600/30 hover:bg-green-600/50 rounded text-[10px] text-green-400 transition-colors">
+                                    Opciones
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            };
+            
+            grid.innerHTML = `
+                <div class="col-span-full text-xs text-gray-500 uppercase tracking-wider mb-1">Las 7 Magníficas</div>
+                ${mag7Data.map(d => renderCard(d, true)).join('')}
+                <div class="col-span-full text-xs text-gray-500 uppercase tracking-wider mb-1 mt-4">Competidores</div>
+                ${compData.map(d => renderCard(d, false)).join('')}
+            `;
+        }
+
+        function renderTicker() {
+            const div = document.getElementById('ticker-content');
+            let html = '<span class="mx-4 text-gray-500">|</span>';
+            
+            ALL_TICKERS.forEach(t => {
+                const d = marketData[t];
+                const color = d.change >= 0 ? 'text-green-400' : 'text-red-400';
+                html += `<span class="mx-4">${t} <span class="${color}">${d.change >= 0 ? '+' : ''}${d.change.toFixed(2)}%</span></span>`;
+            });
+            
+            div.innerHTML = html + '<span class="mx-4 text-gray-500">|</span>' + html;
+        }
+
+        function renderEarnings(filter) {
+            const grid = document.getElementById('earnings-grid');
+            const today = new Date().toISOString().split('T')[0];
+            
+            let filtered = EARNINGS_DATA;
+            if (filter === 'today') filtered = EARNINGS_DATA.filter(e => e.date === today);
+            if (filter === 'upcoming') filtered = EARNINGS_DATA.filter(e => e.date > today);
+            
+            grid.innerHTML = filtered.map(e => {
+                const isToday = e.date === today;
+                const daysLeft = Math.ceil((new Date(e.date) - new Date()) / (1000 * 60 * 60 * 24));
+                
+                return `
+                    <div class="glass rounded-xl p-4 border ${isToday ? 'border-red-500/50 bg-red-500/10' : 'border-gray-700'}">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <div class="font-bold text-xl mono">${e.ticker}</div>
+                                <div class="text-xs text-gray-500">${formatDate(e.date)}</div>
+                            </div>
+                            ${isToday ? '<span class="px-2 py-1 bg-red-500 text-white text-xs rounded font-bold animate-pulse">HOY</span>' : 
+                              daysLeft > 0 ? `<span class="px-2 py-1 bg-yellow-500/50 text-yellow-300 text-xs rounded">En ${daysLeft}d</span>` : ''}
+                        </div>
+                        <div class="text-xs text-gray-400 mt-2">
+                            <div>EPS Est: <span class="text-white">$${e.epsEst}</span></div>
+                            <div>Rev Est: <span class="text-white">$${e.revEst}B</span></div>
+                        </div>
+                        ${isToday ? `<button onclick="quickOptions('${e.ticker}')" class="mt-3 w-full py-1.5 bg-green-600/50 hover:bg-green-600 rounded text-xs transition-colors">Analizar Opciones</button>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterEarnings(type) {
+            renderEarnings(type);
+            lucide.createIcons();
+        }
+
+        function runScanner() {
+            const div = document.getElementById('scanner-results');
+            div.innerHTML = '<div class="col-span-full text-center py-4"><i data-lucide="loader" class="w-6 h-6 animate-spin mx-auto"></i></div>';
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                const opps = Object.values(marketData)
+                    .filter(s => s.change < 0 && s.change > -2.5)
+                    .slice(0, 4);
+                
+                if (opps.length === 0) {
+                    div.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">No hay setups óptimos en este momento</div>';
+                } else {
+                    div.innerHTML = opps.map(s => `
+                        <div class="glass rounded-lg p-4 border border-gray-700">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold mono text-lg text-indigo-400">${s.ticker}</span>
+                                <span class="text-xs bg-indigo-500/20 text-indigo-400 px-2 py-1 rounded">WATCH</span>
+                            </div>
+                            <div class="text-xs text-gray-400 mb-2">${s.change.toFixed(2)}% hoy</div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-gray-500">Precio:</span>
+                                <span class="font-mono font-bold">$${s.price.toFixed(2)}</span>
+                            </div>
+                            <div class="flex justify-between text-xs mb-3">
+                                <span class="text-gray-500">Target:</span>
+                                <span class="font-mono font-bold text-green-400">$${(s.price * 1.25).toFixed(2)}</span>
+                            </div>
+                            <button onclick="quickOptions('${s.ticker}')" class="w-full py-1.5 bg-green-600/30 hover:bg-green-600/50 rounded text-xs text-green-400 transition-colors">
+                                Ver Opciones
+                            </button>
+                        </div>
+                    `).join('');
+                }
+                lucide.createIcons();
+            }, 600);
+        }
+
+        // ========== UTILIDADES ==========
+        function quickOptions(ticker) {
+            document.getElementById('opt-ticker').value = ticker;
+            switchTab('options');
+            // Trigger change event
+            const event = new Event('change');
+            document.getElementById('opt-ticker').dispatchEvent(event);
+            setTimeout(calculateOptions, 300);
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const et = new Date(now.toLocaleString("en-US", {timeZone: "America/New_York"}));
+            document.getElementById('clock').textContent = et.toLocaleTimeString('en-US', {hour12: false, hour: '2-digit', minute: '2-digit'});
+            document.getElementById('last-update').textContent = 'Actualizado: ' + et.toLocaleTimeString();
+        }
+
+        function updateMarketStatus() {
+            const now = new Date();
+            const et = new Date(now.toLocaleString("en-US", {timeZone: "America/New_York"}));
+            const hour = et.getHours();
+            const day = et.getDay();
+            
+            let status = 'Cerrado';
+            if (day >= 1 && day <= 5) {
+                if (hour >= 9 && hour < 16) status = 'Mercado Abierto';
+                else if (hour >= 16) status = 'After Hours';
+                else if (hour >= 4) status = 'Pre-Market';
+            }
+            document.getElementById('market-status').textContent = status;
+        }
+
+        function getCompanyName(t) {
+            const names = {
+                'AAPL': 'Apple', 'MSFT': 'Microsoft', 'GOOGL': 'Alphabet', 'AMZN': 'Amazon',
+                'NVDA': 'NVIDIA', 'META': 'Meta', 'TSLA': 'Tesla', 'AMD': 'AMD',
+                'AVGO': 'Broadcom', 'PLTR': 'Palantir', 'CRM': 'Salesforce', 'NFLX': 'Netflix',
+                'INTC': 'Intel', 'SNOW': 'Snowflake', 'CRWD': 'CrowdStrike', 'UBER': 'Uber'
+            };
+            return names[t] || t;
+        }
+
+        function formatDate(d) {
+            return new Date(d).toLocaleDateString('es-ES', {month: 'short', day: 'numeric'});
+        }
     </script>
 </body>
 </html>
